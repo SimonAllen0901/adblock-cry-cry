@@ -1,0 +1,15 @@
+{
+  "name": "adblockcrycry",
+  "version": "0.1.0",
+  "description": "Just a ADBlocker Detector",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ads",
+    "AdBlock",
+    "detection"
+  ],
+  "author": "SimonAllen0901"
+}
