@@ -27,41 +27,50 @@ class AdBlockCryCry {
     const dataContainer = document.createElement("div");
     dataContainer.innerHTML = this.generatesHTMLString();
     document.body.append(dataContainer);
-    if (document.readyState === "complete") {
-      if (callback && typeof callback === "function") {
-        callback();
-      }
-    } else {
-      window.addEventListener("load", () => {
+
+    const onLoad = () => {
+      try {
         if (callback && typeof callback === "function") {
           callback();
         }
-      });
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      }
+    };
+
+    if (document.readyState === "complete") {
+      onLoad();
+    } else {
+      window.addEventListener("load", onLoad);
     }
   }
 
   async detect() {
-    const isHTMLBlocked = this.elementIds.some((id) =>
-      this.checkVisibilityHidden(id)
-    );
+    try {
+      const isHTMLBlocked = this.elementIds.some((id) =>
+        this.checkVisibilityHidden(id)
+      );
 
-    const isResourceBlocked = await this.checkBlockedResource();
-    const isRequestBlocked = await this.checkBlockedRequests();
+      const isResourceBlocked = await this.checkBlockedResource();
+      const isRequestBlocked = await this.checkBlockedRequests();
 
-    console.log({
-      isHTMLBlocked,
-      isResourceBlocked,
-      isRequestBlocked,
-    });
+      console.log({
+        isHTMLBlocked,
+        isResourceBlocked,
+        isRequestBlocked,
+      });
 
-    return isHTMLBlocked || isResourceBlocked || isRequestBlocked;
+      return isHTMLBlocked || isResourceBlocked || isRequestBlocked;
+    } catch (error) {
+      console.error("Error during detection:", error);
+      return false;
+    }
   }
 
   generatesHTMLString() {
     return this.elementIds
       .map(
-        (id) =>
-          `<div id="${id}" style=""><div id="${id}-child">${id}</div></div>`
+        (id) => `<div id="${id}" style=""><div id="${id}-child"></div></div>`
       )
       .join("");
   }
@@ -79,7 +88,6 @@ class AdBlockCryCry {
       style.height === "0px" ||
       style.width === "0px"
     ) {
-      console.log("[element] ------", element);
       return true;
     }
 
