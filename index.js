@@ -19,6 +19,21 @@ class AdBlockCryCry {
   checkVisibilityHidden() {
     const element = document.querySelector(`#ads`);
     if (!element) return true;
+
+    const style = getComputedStyle(element);
+
+    if (
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      parseFloat(style.opacity) === 0 ||
+      style.height === "0px" ||
+      style.width === "0px"
+    ) {
+      console.log("[element] ------", element);
+      return true;
+    }
+
+    return false;
   }
 
   checkBlockedResource() {
