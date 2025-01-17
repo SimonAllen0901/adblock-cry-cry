@@ -8,10 +8,10 @@ class AdBlockCryCry {
     callback();
   }
 
-  detect() {
-    const isHTMLBlocked = this.generatesHTMLString();
-    const isResourceBlocked = this.checkVisibilityHidden();
-    const isRequestBlocked = this.checkBlockedRequests();
+  async detect() {
+    const isHTMLBlocked = this.checkVisibilityHidden();
+    const isResourceBlocked = await this.checkBlockedResource();
+    const isRequestBlocked = await this.checkBlockedRequests();
 
     console.log({
       isHTMLBlocked,
