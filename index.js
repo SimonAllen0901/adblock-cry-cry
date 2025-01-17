@@ -1,6 +1,18 @@
 class AdBlockCryCry {
   constructor() {}
 
-  init() {}
+  init(callback) {
+    callback();
+  }
+
+  detect() {}
+
+  generatesHTMLString() {}
+
+  checkVisibilityHidden() {}
+
+  checkBlockedResource() {}
+
+  checkBlockedRequests() {}
 }
 export default AdBlockCryCry;
