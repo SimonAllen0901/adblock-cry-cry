@@ -5,7 +5,17 @@ class AdBlockCryCry {
     const dataContainer = document.createElement("div");
     dataContainer.innerHTML = this.generatesHTMLString();
     document.body.append(dataContainer);
-    callback();
+    if (document.readyState === "complete") {
+      if (callback && typeof callback === "function") {
+        callback();
+      }
+    } else {
+      window.addEventListener("load", () => {
+        if (callback && typeof callback === "function") {
+          callback();
+        }
+      });
+    }
   }
 
   async detect() {
