@@ -8,7 +8,19 @@ class AdBlockCryCry {
     callback();
   }
 
-  detect() {}
+  detect() {
+    const isHTMLBlocked = this.generatesHTMLString();
+    const isResourceBlocked = this.checkVisibilityHidden();
+    const isRequestBlocked = this.checkBlockedRequests();
+
+    console.log({
+      isHTMLBlocked,
+      isResourceBlocked,
+      isRequestBlocked,
+    });
+
+    return isHTMLBlocked || isResourceBlocked || isRequestBlocked;
+  }
 
   generatesHTMLString() {
     return `
