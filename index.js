@@ -1,5 +1,25 @@
 class AdBlockCryCry {
-  constructor() {}
+  constructor() {
+    this.elementIds = [
+      "AdHeader",
+      "AdContainer",
+      "AD_Top",
+      "homead",
+      "ad-lead",
+      "ads",
+      "pub_300x250",
+      "pub_300x250m",
+      "pub_728x90",
+      "text-ad",
+      "textAd",
+      "text_ad",
+      "text_ads",
+      "text-ads",
+      "text-ad-links",
+      "adBox",
+      "adSlot",
+    ];
+  }
 
   init(callback) {
     const dataContainer = document.createElement("div");
@@ -19,7 +39,10 @@ class AdBlockCryCry {
   }
 
   async detect() {
-    const isHTMLBlocked = this.checkVisibilityHidden();
+    const isHTMLBlocked = this.elementIds.some((id) =>
+      this.checkVisibilityHidden(id)
+    );
+
     const isResourceBlocked = await this.checkBlockedResource();
     const isRequestBlocked = await this.checkBlockedRequests();
 
@@ -33,13 +56,16 @@ class AdBlockCryCry {
   }
 
   generatesHTMLString() {
-    return `
-      <div id="ads"><div id="ads-child"></div></div>
-    `;
+    return this.elementIds
+      .map(
+        (Id) =>
+          `<div id="${Id}" style=""><div id="${Id}-child">${Id}</div></div>`
+      )
+      .join("");
   }
 
-  checkVisibilityHidden() {
-    const element = document.querySelector(`#ads`);
+  checkVisibilityHidden(id) {
+    const element = document.querySelector(`#${id}`);
     if (!element) return true;
 
     const style = getComputedStyle(element);
