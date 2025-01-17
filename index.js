@@ -1,5 +1,6 @@
 class AdBlockCryCry {
-  constructor() {
+  constructor({ img = "/ads.jpg", elementIds = [] }) {
+    this.img = img;
     this.elementIds = [
       "AdHeader",
       "AdContainer",
@@ -18,6 +19,7 @@ class AdBlockCryCry {
       "text-ad-links",
       "adBox",
       "adSlot",
+      ...elementIds,
     ];
   }
 
@@ -58,8 +60,8 @@ class AdBlockCryCry {
   generatesHTMLString() {
     return this.elementIds
       .map(
-        (Id) =>
-          `<div id="${Id}" style=""><div id="${Id}-child">${Id}</div></div>`
+        (id) =>
+          `<div id="${id}" style=""><div id="${id}-child">${id}</div></div>`
       )
       .join("");
   }
@@ -90,7 +92,7 @@ class AdBlockCryCry {
   checkBlockedResource() {
     return new Promise((resolve) => {
       const fakeAd = document.createElement("img");
-      fakeAd.src = `/ads.jpg`;
+      fakeAd.src = `${this.img}?cache-buster=${Date.now()}`;
       fakeAd.onerror = () => resolve(true);
       fakeAd.onload = () => resolve(false);
       document.body.appendChild(fakeAd);
