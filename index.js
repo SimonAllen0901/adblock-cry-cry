@@ -34,7 +34,7 @@ class AdBlockCryCry {
 
   generatesHTMLString() {
     return `
-      <div id="ads"></div>
+      <div id="ads"><div id="ads-child"></div></div>
     `;
   }
 
@@ -55,7 +55,10 @@ class AdBlockCryCry {
       return true;
     }
 
-    return false;
+    const hasContent = Array.from(element.children).some(
+      (child) => child.textContent.trim() !== ""
+    );
+    return !hasContent;
   }
 
   checkBlockedResource() {
