@@ -56,6 +56,13 @@ class AdBlockCryCry {
         isRequestBlocked,
       });
 
+      this.elementIds.forEach((id) => {
+        const element = document.querySelector(`#${id}`);
+        if (element) {
+          element.innerHTML = "";
+        }
+      });
+
       return isHTMLBlocked || isResourceBlocked || isRequestBlocked;
     } catch (error) {
       console.error("Error during detection:", error);
