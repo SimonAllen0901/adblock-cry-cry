@@ -4,12 +4,26 @@
   "description": "Just a ADBlocker Detector",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-jsdom",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "keywords": [
     "ads",
     "AdBlock",
     "detection"
   ],
-  "author": "SimonAllen0901"
+  "author": "SimonAllen0901",
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^26.0.0"
+  }
 }
