@@ -1,5 +1,7 @@
 class AdBlockCryCry {
-  constructor({ img = "/ads.jpg", elementIds = [] }) {
+  constructor(options = {}) {
+    const { img = "/ads.jpg", elementIds = [] } = options;
+
     this.img = img;
     this.elementIds = [
       "AdHeader",
@@ -25,7 +27,7 @@ class AdBlockCryCry {
 
   init(callback) {
     const dataContainer = document.createElement("div");
-    dataContainer.innerHTML = this.generatesBannersString();
+    dataContainer.innerHTML = this.generatesHTMLString();
     document.body.append(dataContainer);
 
     if (document.readyState === "complete") {
