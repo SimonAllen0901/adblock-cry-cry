@@ -6,18 +6,32 @@
 
 A simple JavaScript library to detect if a user has an AdBlocker installed in their browser.
 
+## Usage
 
 ```=js
-const detector = new AdBlockCryCry()
+import AdBlockCryCry from "adblockcrycry";
+
+const detector = new AdBlockCryCry();
 
 detector.init(async () => {
   const isAdblock = await detector.detect();
   if (isAdblock) {
     console.log("AD Blocker detected!");
-    // do something..
+    // Take appropriate action
   } else {
     console.log("No AD Blocker detected!");
-    // do something..
   }
 });
+
 ```
+
+## API Reference
+
+### `new AdBlockCryCry(options)`
+
+Creates an instance of the AdBlockCryCry detector.
+
+| Parameter | Type | Default | Description | 
+| --- | --- | --- | --- |
+| `img` | `string` | `"/ads.jpg"` | Path to a dummy ad image used for detection |
+| `elementIds` | `Array<string>` | `[]` | Additional ad-related element IDs to check |
