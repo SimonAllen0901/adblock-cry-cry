@@ -109,7 +109,7 @@ class AdBlockCryCry {
 
   checkBlockedRequests() {
     return new Promise((resolve) => {
-      const randomPath = `/ads.js`;
+      const randomPath = `/ads-${Date.now()}.js`;
       fetch(randomPath)
         .then(() => resolve(false))
         .catch(() => resolve(true));
