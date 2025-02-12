@@ -94,10 +94,7 @@ class AdBlockCryCry {
       return true;
     }
 
-    const hasContent = Array.from(element.children).some(
-      (child) => child.textContent.trim() !== ""
-    );
-    return !hasContent;
+    return false;
   }
 
   checkBlockedResource() {
