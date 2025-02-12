@@ -25,23 +25,19 @@ class AdBlockCryCry {
 
   init(callback) {
     const dataContainer = document.createElement("div");
-    dataContainer.innerHTML = this.generatesHTMLString();
+    dataContainer.innerHTML = this.generatesBannersString();
     document.body.append(dataContainer);
 
-    const onLoad = () => {
-      try {
+    if (document.readyState === "complete") {
+      if (callback && typeof callback === "function") {
+        callback();
+      }
+    } else {
+      window.addEventListener("load", () => {
         if (callback && typeof callback === "function") {
           callback();
         }
-      } catch (error) {
-        console.error("Error during initialization:", error);
-      }
-    };
-
-    if (document.readyState === "complete") {
-      onLoad();
-    } else {
-      window.addEventListener("load", onLoad);
+      });
     }
   }
 
