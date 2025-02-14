@@ -1,8 +1,9 @@
 class AdBlockCryCry {
   constructor(options = {}) {
-    const { img = "/ads.jpg", elementIds = [] } = options;
+    const { img = "/ads.jpg", elementIds = [], gtmId = "" } = options;
 
     this.img = img;
+    this.gtmId = gtmId;
     this.elementIds = [
       "AdHeader",
       "AdContainer",
@@ -51,11 +52,17 @@ class AdBlockCryCry {
 
       const isResourceBlocked = await this.checkBlockedResource();
       const isRequestBlocked = await this.checkBlockedRequests();
+      const isGTMBlocked = await this.checkGTMBlocked();
+
+      const isAdBlockCryCry =
+        isHTMLBlocked || isResourceBlocked || isRequestBlocked || isGTMBlocked;
 
       console.log({
         isHTMLBlocked,
         isResourceBlocked,
         isRequestBlocked,
+        isGTMBlocked,
+        isAdBlockCryCry,
       });
 
       this.elementIds.forEach((id) => {
@@ -65,7 +72,7 @@ class AdBlockCryCry {
         }
       });
 
-      return isHTMLBlocked || isResourceBlocked || isRequestBlocked;
+      return isAdBlockCryCry;
     } catch (error) {
       console.error("Error during detection:", error);
       return false;
@@ -115,6 +122,24 @@ class AdBlockCryCry {
       fetch(randomPath)
         .then(() => resolve(false))
         .catch(() => resolve(true));
+    });
+  }
+
+  checkGTMBlocked() {
+    if (!this.gtmId) return Promise.resolve(false);
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = `https://www.googletagmanager.com/gtm.js?id=${this.gtmId}`;
+      script.async = true;
+
+      script.onload = () => {
+        setTimeout(() => {
+          resolve(typeof window.google_tag_manager === "undefined");
+        }, 500);
+      };
+      script.onerror = () => resolve(true);
+
+      document.head.appendChild(script);
     });
   }
 }
