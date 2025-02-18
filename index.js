@@ -1,9 +1,15 @@
 class AdBlockCryCry {
   constructor(options = {}) {
-    const { img = "/ads.jpg", elementIds = [], gtmId = "" } = options;
+    const {
+      img = "/ads.jpg",
+      elementIds = [],
+      gtmId = "",
+      isCheckFacebook = true,
+    } = options;
 
     this.img = img;
     this.gtmId = gtmId;
+    this.isCheckFacebook = isCheckFacebook;
     this.elementIds = [
       "AdHeader",
       "AdContainer",
@@ -46,6 +52,9 @@ class AdBlockCryCry {
 
   async detect() {
     try {
+      let isAdBlockCryCry = false;
+      let isFBBlocked = false;
+
       const isHTMLBlocked = this.elementIds.some((id) =>
         this.checkVisibilityHidden(id)
       );
@@ -54,14 +63,20 @@ class AdBlockCryCry {
       const isRequestBlocked = await this.checkBlockedRequests();
       const isGTMBlocked = await this.checkGTMBlocked();
 
-      const isAdBlockCryCry =
+      isAdBlockCryCry =
         isHTMLBlocked || isResourceBlocked || isRequestBlocked || isGTMBlocked;
+
+      if (this.isCheckFacebook) {
+        isFBBlocked = await this.checkFBlocked();
+        isAdBlockCryCry = isAdBlockCryCry || isFBBlocked;
+      }
 
       console.log({
         isHTMLBlocked,
         isResourceBlocked,
         isRequestBlocked,
         isGTMBlocked,
+        isFBBlocked,
         isAdBlockCryCry,
       });
 
@@ -140,6 +155,42 @@ class AdBlockCryCry {
       script.onerror = () => resolve(true);
 
       document.head.appendChild(script);
+    });
+  }
+
+  checkFBlocked() {
+    if (this.isCheckFacebook === false) return Promise.resolve(false);
+    return new Promise(async (resolve) => {
+      let scriptBlocked = false;
+      let fetchBlocked = false;
+
+      // 1. 檢查 <script> 是否能載入
+      scriptBlocked = await new Promise((resolveScript) => {
+        const script = document.createElement("script");
+        script.src = "https://connect.facebook.net/en_US/fbevents.js";
+        script.async = true;
+
+        script.onload = () => resolveScript(false);
+        script.onerror = () => resolveScript(true);
+
+        document.head.appendChild(script);
+      });
+
+      // 2. 檢查 fetch 是否能請求 Facebook Pixel
+      fetchBlocked = await new Promise((resolveFetch) => {
+        fetch("https://connect.facebook.net/en_US/fbevents.js", {
+          method: "HEAD",
+          mode: "no-cors",
+        })
+          .then(() => resolveFetch(false))
+          .catch(() => resolveFetch(true));
+      });
+
+      if (scriptBlocked || fetchBlocked) {
+        console.log("Facebook Pixel blocked", { scriptBlocked, fetchBlocked });
+      }
+
+      resolve(scriptBlocked || fetchBlocked);
     });
   }
 }
