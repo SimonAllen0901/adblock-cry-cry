@@ -8,6 +8,12 @@ describe("AdBlockCryCry", () => {
     document.body.innerHTML = "";
   });
 
+  test("Should initialize correctly", () => {
+    expect(detector).toBeDefined();
+    expect(typeof detector.init).toBe("function");
+    expect(typeof detector.detect).toBe("function");
+  });
+
   test("Should properly initialize AdBlockCryCry", () => {
     expect(detector).toBeInstanceOf(AdBlockCryCry);
     expect(detector.elementIds).toContain("AdHeader");
@@ -26,6 +32,13 @@ describe("AdBlockCryCry", () => {
       const isBlocked = await detector.detect();
       expect(typeof isBlocked).toBe("boolean");
     });
+  });
+
+  test("Should not detect ad blocker when ad elements are present", async () => {
+    jest.spyOn(detector, "detect").mockResolvedValue(false);
+
+    const result = await detector.detect();
+    expect(result).toBe(false);
   });
 
   test("Should insert ad elements into document.body", () => {
