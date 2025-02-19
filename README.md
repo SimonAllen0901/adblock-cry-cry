@@ -36,3 +36,4 @@ Creates an instance of the AdBlockCryCry detector.
 | `img`        | `string`        | `"/ads.jpg"` | Path to a dummy ad image used for detection                     |
 | `elementIds` | `Array<string>` | `[]`         | Additional ad-related element IDs to check                      |
 | `gtmId`      | `string`        | `""`         | Google Tag Manager container ID used for detecting GTM blocking |
+| `isCheckFacebook` | `boolean`| `true` | Checkout Facebook Pixel source status       |
