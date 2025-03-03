@@ -1,11 +1,19 @@
 {
   "name": "adblockcrycry",
   "version": "0.1.0",
-  "description": "Just a ADBlocker Detector",
+  "description": "A simple JavaScript library to detect AdBlockers in browsers.",
+  "type": "module",
+  "types": "index.d.ts",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm test"
   },
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "jest": {
     "testEnvironment": "jest-environment-jsdom",
     "transform": {
@@ -15,8 +23,21 @@
   "keywords": [
     "ads",
     "AdBlock",
-    "detection"
+    "detection",
+    "adblock-detector"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimonAllen0901/adblockcrycry.git"
+  },
+  "homepage": "https://github.com/SimonAllen0901/adblock-cry-cry#readme",
+  "bugs": {
+    "url": "https://github.com/SimonAllen0901/adblock-cry-cry/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
   "author": "SimonAllen0901",
   "devDependencies": {
     "@babel/core": "^7.26.0",
