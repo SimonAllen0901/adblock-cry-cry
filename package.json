@@ -1,18 +1,23 @@
 {
-  "name": "adblockcrycry",
+  "name": "adblock-cry-cry",
   "version": "0.1.0",
   "description": "A simple JavaScript library to detect AdBlockers in browsers.",
   "type": "module",
   "types": "index.d.ts",
-  "main": "index.js",
+  "exports": {
+    "import": "./index.js",
+    "types": "./index.d.ts"
+  },
   "scripts": {
     "test": "jest",
     "prepublishOnly": "npm test"
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "dist/"
   ],
   "jest": {
     "testEnvironment": "jest-environment-jsdom",

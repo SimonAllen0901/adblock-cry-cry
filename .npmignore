@@ -1,4 +1,6 @@
 node_modules
+dist
+test
 
 *.test.js
 coverage/
@@ -13,12 +15,13 @@ __mocks__/
 
 .git
 .gitignore
-
+.babelrc
+.npmrc
 .vscode/
 .idea/
 .DS_Store
 
-
+*.cjs
 package-lock.json
 yarn.lock
 doc/
